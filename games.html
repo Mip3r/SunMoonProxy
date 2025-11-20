@@ -8,7 +8,6 @@
 	<style> .hero{ padding:22px } </style>
 </head>
 <body>
-	<div class="aurora"></div>
 	<div class="app">
     <nav class="nav">
       <a class="brand" href="index.html">
@@ -22,8 +21,8 @@
       <a href="settings.html">⚙️ Settings</a>
     </nav>
 
-    <header class="header">
 
+    <header class="header"></header>
 		<main class="main">
 			<section class="hero">
 				<div class="title">Games</div>
@@ -49,41 +48,22 @@
 					<!-- Add more game cards here -->
 				</div>
 			</section>
-		</main>
-	</div>
+			</main>
+			</div>
 
-	<script>
-
-		function openModal(url){
-			document.getElementById('gameFrame').src = url;
-			document.getElementById('modalBackdrop').classList.add('show');
-		}
-		function closeModal(){
-			document.getElementById('gameFrame').src = 'about:blank';
-			document.getElementById('modalBackdrop').classList.remove('show');
-		}
-    // Handle sm:// protocol navigation
-    function openLink(url) {
-      if (!url.startsWith('sm://')) return;
-      
-      const page = url.replace('sm://', '');
-      switch(page) {
-        case 'games':
-          location.href = 'games.html';
-          break;
-        case 'info':
-          location.href = 'info.html';
-          break;
-        case 'settings':
-          location.href = 'settings.html';
-          break;
-        case 'browser':
-          location.href = 'browser.html';
-          break;
-        default:
-          console.warn('Unknown sm:// link:', url);
-      }
-    }
-	</script>
-</body>
-</html>
+			<script>
+			// Handle sm:// protocol navigation (same routing as index)
+			function openLink(url) {
+				if (!url.startsWith('sm://')) return;
+				const page = url.replace('sm://', '');
+				switch(page) {
+					case 'games': location.href = 'games.html'; break;
+					case 'info': location.href = 'info.html'; break;
+					case 'settings': location.href = 'settings.html'; break;
+					case 'browser': location.href = 'browser.html'; break;
+					default: console.warn('Unknown sm:// link:', url);
+				}
+			}
+			</script>
+	</body>
+	</html>

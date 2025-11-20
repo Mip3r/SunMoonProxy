@@ -3,98 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>SunMoon Proxy</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      height: 100vh;
-      overflow: hidden;
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      background: radial-gradient(ellipse at bottom, #0a0b12 0%, #000000 100%);
-    }
-
-    /* Aurora animated glow background */
-    .aurora {
-      position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(125deg,
-        #00ffc8, #3f8cff, #a14eff, #ff4e9b, #00ffc8);
-      background-size: 400% 400%;
-      animation: auroraMove 15s ease infinite;
-      filter: blur(200px);
-      z-index: -1;
-      opacity: 0.6;
-    }
-
-    @keyframes auroraMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    /* Main glass container */
-    .container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 25px;
-      backdrop-filter: blur(20px);
-      padding: 80px 160px;
-      text-align: center;
-      box-shadow: 0 0 50px rgba(0,255,255,0.2);
-      transition: 0.3s ease;
-    }
-
-    .container:hover {
-      box-shadow: 0 0 80px rgba(0,255,255,0.3);
-      transform: translate(-50%, -50%) scale(1.02);
-    }
-
-    .title {
-      font-size: 64px;
-      letter-spacing: 6px;
-      font-weight: 700;
-      background: linear-gradient(to right, #00fff0, #7b5eff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 40px;
-      text-transform: uppercase;
-    }
-
-    /* Side buttons */
-    .side {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .side.left { left: 40px; }
-    .side.right { right: 40px; }
-
-    .side img {
-      width: 60px;
-      height: 60px;
-      cursor: pointer;
-      opacity: 0.8;
-      transition: 0.2s ease;
-    }
-
-    .side img:hover {
-      opacity: 1;
-      transform: scale(1.1);
-      filter: drop-shadow(0 0 15px rgba(0,255,255,0.5));
-    }
-  </style>
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
   <div class="app">
@@ -111,19 +20,31 @@
     </nav>
 
     <header class="header">
-      <!-- URL / Search bar -->
-      <form id="navForm" onsubmit="onNavigate(event)" style="margin-left:16px; display:flex; gap:8px; align-items:center;">
-        <input id="urlBar" type="search" placeholder="Go to URL or search..." style="padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:inherit; min-width:220px">
-        <button type="submit" class="cta" style="padding:8px 12px; font-size:14px">Go</button>
-      </form>
+      <!-- header simplified; controls live in browser shell -->
     </header>
 
     <div class="main">
-      <section class="hero">
-        <div class="title">SunMoon Proxy</div>
-        <div class="subtitle">A lightweight web-proxy interface with embedded HTML games.</div>
-        <a class="cta" href="games.html">Play games</a>
-      </section>
+      <!-- Browser shell: tabs, controls, and iframe -->
+      <div class="browser-shell">
+        <div class="tabs" id="tabsBar">
+          <!-- tabs inserted by JS -->
+          <button id="newTabBtn" class="new-tab">+</button>
+        </div>
+
+        <div class="browser-controls">
+          <div class="nav-buttons">
+            <button id="backBtn">◀</button>
+            <button id="forwardBtn">▶</button>
+            <button id="reloadBtn">⟳</button>
+          </div>
+          <form id="navForm" onsubmit="onNavigate(event)" class="url-form">
+            <input id="urlBar" type="search" placeholder="Search or enter a URL..." autocomplete="off">
+            <button type="submit" class="cta">Go</button>
+          </form>
+        </div>
+
+        <iframe id="browserFrame" class="browser-frame" src="about:blank" sandbox="allow-same-origin allow-scripts allow-forms allow-popups"></iframe>
+      </div>
     </div>
 
     <!-- Side buttons for quick actions -->
@@ -141,17 +62,6 @@
   <!-- Version popup -->
   <div id="versionPopup" class="version-popup">
     New version available — <a id="versionLink" href="#" target="_blank">relaunch</a>
-  </div>
-
-  <!-- Embed modal (reused on games page) -->
-  <div id="modalBackdrop" class="modal-backdrop">
-    <div class="modal">
-      <div class="controls">
-        <div class="meta">Game</div>
-        <button class="close" onclick="closeModal()">Close</button>
-      </div>
-      <iframe id="gameFrame" src="about:blank" allowfullscreen></iframe>
-    </div>
   </div>
 
   <script>
@@ -193,22 +103,98 @@
       }
     }
 
-    // Modal helpers (used by games page too)
-    function openModal(url){
-      const backdrop = document.getElementById('modalBackdrop');
-      const frame = document.getElementById('gameFrame');
-      frame.src = url;
-      backdrop.classList.add('show');
-    }
-    function closeModal(){
-      const backdrop = document.getElementById('modalBackdrop');
-      const frame = document.getElementById('gameFrame');
-      frame.src = 'about:blank';
-      backdrop.classList.remove('show');
+
+    // Browser tab management and navigation
+    const PROXY_BASE = ''; // configure to your worker if available
+
+    let tabs = [];
+    let currentTabId = null;
+
+    function createTab(url = 'about:blank', title = 'New Tab'){
+      const id = Date.now() + Math.floor(Math.random()*1000);
+      tabs.push({ id, url, title, history: [url], historyIndex: 0 });
+      renderTabs();
+      switchTab(id);
     }
 
-    // Kick off version check after page load
-    window.addEventListener('load', () => { checkVersion(); });
+    function renderTabs(){
+      const bar = document.getElementById('tabsBar');
+      // remove existing tab nodes (except new tab button)
+      Array.from(bar.querySelectorAll('.tab')).forEach(n => n.remove());
+      tabs.forEach(t => {
+        const el = document.createElement('div');
+        el.className = 'tab' + (t.id === currentTabId ? ' active' : '');
+        el.dataset.id = t.id;
+        el.textContent = t.title || t.url;
+        el.onclick = () => switchTab(t.id);
+        bar.insertBefore(el, document.getElementById('newTabBtn'));
+      });
+    }
+
+    function switchTab(id){
+      const tab = tabs.find(x => x.id === id);
+      if(!tab) return;
+      currentTabId = id;
+      document.getElementById('browserFrame').src = tab.url;
+      document.getElementById('urlBar').value = tab.url === 'about:blank' ? '' : tab.url;
+      renderTabs();
+    }
+
+    function closeTab(id){
+      const idx = tabs.findIndex(t => t.id === id);
+      if(idx === -1) return;
+      tabs.splice(idx,1);
+      if(tabs.length === 0) createTab();
+      else if(currentTabId === id) switchTab(tabs[Math.max(0, idx-1)].id);
+      else renderTabs();
+    }
+
+    function navigateTo(url){
+      if(!currentTabId) createTab(url);
+      const tab = tabs.find(t => t.id === currentTabId);
+      if(!tab) return;
+      const target = /^https?:\/\//i.test(url) ? url : 'https://' + url;
+      tab.history = tab.history.slice(0, tab.historyIndex + 1);
+      tab.history.push(target);
+      tab.historyIndex = tab.history.length - 1;
+      tab.url = target;
+      document.getElementById('browserFrame').src = (PROXY_BASE ? PROXY_BASE + encodeURIComponent(target) : target);
+      document.getElementById('urlBar').value = target;
+      renderTabs();
+    }
+
+    function goBack(){
+      const tab = tabs.find(t => t.id === currentTabId);
+      if(!tab || tab.historyIndex <= 0) return;
+      tab.historyIndex--;
+      tab.url = tab.history[tab.historyIndex];
+      document.getElementById('browserFrame').src = (PROXY_BASE ? PROXY_BASE + encodeURIComponent(tab.url) : tab.url);
+      document.getElementById('urlBar').value = tab.url;
+    }
+
+    function goForward(){
+      const tab = tabs.find(t => t.id === currentTabId);
+      if(!tab || tab.historyIndex >= tab.history.length - 1) return;
+      tab.historyIndex++;
+      tab.url = tab.history[tab.historyIndex];
+      document.getElementById('browserFrame').src = (PROXY_BASE ? PROXY_BASE + encodeURIComponent(tab.url) : tab.url);
+      document.getElementById('urlBar').value = tab.url;
+    }
+
+    function reloadFrame(){
+      const f = document.getElementById('browserFrame');
+      f.src = f.src;
+    }
+
+    // Kick off version check and create initial tab after page load
+    window.addEventListener('load', () => {
+      checkVersion();
+      createTab('about:blank', 'New Tab');
+      document.getElementById('newTabBtn').addEventListener('click', () => createTab());
+      document.getElementById('backBtn').addEventListener('click', goBack);
+      document.getElementById('forwardBtn').addEventListener('click', goForward);
+      document.getElementById('reloadBtn').addEventListener('click', reloadFrame);
+    });
 
     // Handle sm:// protocol navigation
     function openLink(url) {
@@ -233,9 +219,7 @@
       }
     }
 
-    // Client navigation / search helper
-    // Set PROXY_BASE to your deployed proxy Worker URL, e.g. 'https://your-worker.mydomain.workers.dev/?url='
-    const PROXY_BASE = '';
+    // Client navigation / search helper (uses tabbed iframe)
     function isLikelyURL(input){
       return /^https?:\/\//i.test(input) || /\./.test(input);
     }
@@ -244,17 +228,11 @@
       const val = document.getElementById('urlBar').value.trim();
       if(!val) return;
       if(isLikelyURL(val)){
-        const target = /^https?:\/\//i.test(val) ? val : 'https://' + val;
-        if(PROXY_BASE){
-          window.open(PROXY_BASE + encodeURIComponent(target), '_blank');
-        }else{
-          // No proxy configured; open directly in new tab
-          window.open(target, '_blank');
-        }
+        navigateTo(val);
       }else{
         // Treat as search query
         const q = encodeURIComponent(val);
-        window.open('https://www.google.com/search?q=' + q, '_blank');
+        navigateTo('https://www.google.com/search?q=' + q);
       }
     }
   </script>
