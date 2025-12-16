@@ -14,8 +14,7 @@
     .sidebar a:hover svg { color: white; }
     .main { margin-left: 52px; padding: 20px; min-height: 100vh; }
     .welcome { text-align: center; margin-top: 100px; }
-    .proxy-iframe { display: none; width: 100%; height: calc(100vh - 68px); border: none; }
-    .proxy-iframe.show { display: block; }
+    .proxy-iframe { width: 100%; height: calc(100vh - 120px); border: none; }
   </style>
 </head>
 <body>
@@ -54,26 +53,40 @@
       <h1>Welcome to SunMoon Proxy</h1>
       <p>Use the sidebar to navigate: Games, Proxy, or Lunar.</p>
     </div>
-    <iframe id="proxy-iframe" class="proxy-iframe" src="about:blank"></iframe>
+    <div class="proxy-section" id="proxy-section" style="display: none;">
+      <form id="url-form" style="margin-bottom: 20px;">
+        <input type="text" id="url-input" placeholder="Enter URL to load..." style="width: 70%; padding: 10px; border: 1px solid #a5adce; background: #181824; color: #e6f7ff;" />
+        <button type="submit" style="padding: 10px 20px; background: #a5adce; color: #181824; border: none; cursor: pointer;">Load</button>
+      </form>
+      <iframe id="proxy-iframe" class="proxy-iframe" src="about:blank"></iframe>
+    </div>
   </div>
   <script>
     const homeBtn = document.getElementById('home-btn');
     const proxyBtn = document.getElementById('proxy-btn');
     const welcome = document.getElementById('welcome');
+    const proxySection = document.getElementById('proxy-section');
+    const urlForm = document.getElementById('url-form');
+    const urlInput = document.getElementById('url-input');
     const proxyIframe = document.getElementById('proxy-iframe');
 
     homeBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      proxyIframe.classList.remove('show');
+      proxySection.style.display = 'none';
       welcome.style.display = 'block';
     });
 
     proxyBtn.addEventListener('click', (e) => {
       e.preventDefault();
       welcome.style.display = 'none';
-      proxyIframe.classList.add('show');
-      if (proxyIframe.src === 'about:blank') {
-        proxyIframe.src = 'https://www.google.com'; // Default proxy start page, change as needed
+      proxySection.style.display = 'block';
+    });
+
+    urlForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const url = urlInput.value.trim();
+      if (url) {
+        proxyIframe.src = url.startsWith('http') ? url : 'https://' + url;
       }
     });
   </script>
