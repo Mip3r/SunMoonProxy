@@ -69,6 +69,9 @@
       proxySection.style.display = 'block';
       sidebar.classList.add('hidden');
       main.classList.add('full');
+      if (proxyIframe.src === 'about:blank' || proxyIframe.src === '') {
+        proxyIframe.src = 'https://example.com';
+      }
     });
   </script>
 </body>
