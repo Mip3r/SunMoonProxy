@@ -11,12 +11,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* subtle page backdrop gradient like Lunar */
+body::before{ content:''; position:fixed; left:0; right:0; top:0; bottom:0; background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%); pointer-events:none }
+
 /* App shell */
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-left: 250px; /* Make room for sidebar */
+  padding-left: 80px; /* Make room for compact sidebar */
 }
 
 .header {
@@ -39,7 +42,7 @@ body {
   width: 72px; /* compact icon bar */
   background: #24273a;
   border-right: 1px solid rgba(255,255,255,0.04);
-  padding: 12px 8px;
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -67,19 +70,24 @@ body {
 
 .nav a:hover { background: rgba(255,255,255,0.03); transform: translateY(-2px) }
 
+.nav a img{ width:28px; height:28px }
+.nav a:hover img{ transform:scale(1.05) }
+
 .nav a.active { background: rgba(255,255,255,0.04); }
 
 .main {
-  flex:1; display:flex; align-items:center; justify-content:center; padding:40px;
+  flex:1; display:flex; align-items:flex-start; justify-content:center; padding:28px 36px 48px 36px;
 }
-.hero {
-  width:100%; max-width:980px; text-align:center; background:rgba(255,255,255,0.03);
-  border-radius:18px; padding:56px; border:1px solid rgba(255,255,255,0.04);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
-}
-.title { font-size:48px; letter-spacing:4px; font-weight:800; margin-bottom:14px; background:linear-gradient(90deg,#00fff0,#7b5eff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent }
-.subtitle{ color:rgba(230,247,255,0.8); margin-bottom:22px }
-.cta { display:inline-block; margin-top:18px; padding:12px 20px; background:linear-gradient(90deg,#00c9ff,#7b5eff); color:#041017; font-weight:700; border-radius:12px; text-decoration:none }
+/* Hero card */
+.hero-card{ width:100%; max-width:1100px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); border-radius:18px; padding:26px 30px; border:1px solid rgba(255,255,255,0.03); box-shadow: 0 12px 60px rgba(0,0,0,0.55); display:flex; gap:20px; align-items:center }
+.hero-card .hero-info{ flex:1 }
+.hero-title{ font-size:40px; letter-spacing:2px; font-weight:900; color:transparent; background:linear-gradient(90deg,#d6e9ff,#bfa2ff); -webkit-background-clip:text; background-clip:text }
+.hero-sub{ color:rgba(230,247,255,0.75); margin-top:8px; max-width:720px }
+.hero-cta{ display:inline-block; margin-top:12px; padding:10px 18px; background:linear-gradient(90deg,#00c9ff,#7b5eff); color:#041017; font-weight:700; border-radius:12px; text-decoration:none; box-shadow: 0 8px 30px rgba(0,0,0,0.5) }
+
+/* anchors in main content should be visible and not default purple */
+.main a, .main a:visited{ color: #e6f7ff; text-decoration:none }
+.main a.play-button{ text-decoration:none }
 
 /* Side floating buttons (mirrored from previous design) */
 .side { position:fixed; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:18px }
@@ -92,32 +100,24 @@ body {
 .games-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-  margin-top: 24px;
-  padding: 0 24px;
+  gap: 22px;
+  margin-top: 18px;
+  padding: 0 8px;
 }
 
 .game-card {
-  background: rgba(255,255,255,0.02);
-  border-radius: 12px;
-  padding: 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 14px;
+  padding: 14px;
   text-align: center;
-  border: 1px solid rgba(255,255,255,0.04);
-  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid rgba(255,255,255,0.03);
+  transition: transform 0.16s, box-shadow 0.16s;
+  display:flex; flex-direction:column; justify-content:space-between
 }
 
-.game-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-}
+.game-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.5) }
 
-.game-card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
+.game-card img { width:100%; height:180px; object-fit:cover; border-radius:10px; margin-bottom:14px }
 
 .game-card h3 {
   font-size: 18px;
@@ -125,36 +125,9 @@ body {
   color: #fff;
 }
 
-.play-button {
-  display: inline-block;
-  padding: 10px 24px;
-  background: linear-gradient(90deg,#00c9ff,#7b5eff);
-  color: #fff;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: opacity 0.2s;
-}
+.play-button { display:inline-block; padding:10px 22px; background:linear-gradient(90deg,#ffd166,#ff8a66); color:#041017; border-radius:10px; font-weight:800; box-shadow: 0 10px 28px rgba(0,0,0,0.45); text-decoration:none }
+.play-button:hover{ transform: translateY(-3px); box-shadow: 0 22px 46px rgba(0,0,0,0.6) }
 
-.play-button:hover {
-  opacity: 0.9;
-}
-
-/* Browser layout */
-.browser-shell { display:flex; flex-direction:column; height: calc(100vh - 80px); width: 100%; }
-.tabs { display:flex; align-items:center; gap:8px; padding:10px 12px; background: transparent; border-bottom:1px solid rgba(255,255,255,0.02); }
-.tab { padding:8px 12px; border-radius:8px; background: transparent; color: rgba(230,247,255,0.9); cursor:pointer; }
-.tab.active { background: rgba(255,255,255,0.03); font-weight:700; }
-.new-tab { margin-left: auto; padding:6px 10px; border-radius:8px; background: rgba(255,255,255,0.02); border: none; cursor: pointer; }
-
-.browser-controls { display:flex; align-items:center; gap:12px; padding:10px 12px; background: transparent; }
-.nav-buttons button { padding:8px 10px; border-radius:8px; background: transparent; border: none; color: rgba(230,247,255,0.95); cursor: pointer }
-.url-form { flex:1; display:flex; gap:8px; justify-content:center }
-.url-form input { width: 720px; max-width: calc(100% - 200px); padding:10px 18px; border-radius:999px; border:1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.12); color:inherit; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02) }
-.url-form input::placeholder { color: rgba(230,247,255,0.55) }
-.url-form .cta { padding:8px 14px; border-radius:10px }
-
-.browser-frame { flex:1; width:100%; border:0; background: #fff; border-radius:6px; overflow:hidden }
 
 
 /* Version popup */

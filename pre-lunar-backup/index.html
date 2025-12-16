@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SunMoon Proxy</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="app">
+    <nav class="nav">
+      <a class="brand" href="index.html">
+        <img src="assets/logo.png" alt="SunMoon logo">
+      </a>
+      <a href="index.html" title="Home"><img src="assets/logo.png" alt="Home" style="width:28px;height:28px;object-fit:contain"></a>
+      <a href="games.html" title="Games"><img src="assets/games_button.png" alt="Games" style="width:28px;height:28px;object-fit:contain"></a>
+      <a href="info.html" title="Info"><img src="assets/info_button.png" alt="Info" style="width:28px;height:28px;object-fit:contain"></a>
+      <a href="settings.html" title="Settings"><img src="assets/settings_button.png" alt="Settings" style="width:28px;height:28px;object-fit:contain"></a>
+    </nav>
+
+    <header class="header">
+      <div class="hero-card">
+        <img src="assets/logo.png" alt="logo" style="width:84px;height:84px;border-radius:12px;object-fit:contain">
+        <div class="hero-info">
+          <div class="hero-title">SunMoon Proxy</div>
+          <div class="hero-sub">A small GitHub Pages–friendly launcher for HTML games. Click a game below to play on its page.</div>
+          <a class="hero-cta" href="games.html">View all games</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="main">
+      <div style="width:100%; max-width:980px;">
+        <h3 style="color:rgba(230,247,255,0.8); margin-bottom:12px">Featured</h3>
+        <div class="games-grid">
+          <div class="game-card">
+            <img src="assets/game_button.png" alt="1v1.lol">
+            <h3>1v1.lol</h3>
+            <a class="play-button" href="games/1v1.lol.html">Play</a>
+          </div>
+          <div class="game-card">
+            <img src="assets/game_button.png" alt="Tomb of the Mask">
+            <h3>Tomb of the Mask</h3>
+            <a class="play-button" href="games/tomb_of_the_mask.html">Play</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="side left">
+      <a href="settings.html"><img src="assets/settings_button.png" alt="Settings"></a>
+    </div>
+
+    <div class="side right">
+      <a href="info.html"><img src="assets/info_button.png" alt="Info"></a>
+      <a href="games.html"><img src="assets/games_button.png" alt="Games"></a>
+    </div>
+
+  </div>
+
+  <!-- Version popup -->
+  <div id="versionPopup" class="version-popup">
+    New version available — <a id="versionLink" href="#" target="_blank">relaunch</a>
+  </div>
+
+  <script>
+    // Minimal script: only perform version check on load
+    async function fetchLocalVersion(){
+      try{ const r = await fetch('version.txt', {cache: 'no-store'}); const txt = await r.text(); return JSON.parse(txt).version; }
+      catch(e){ console.warn('local version read failed', e); return null }
+    }
+    async function fetchRemoteVersion(){
+      const remote = 'https://raw.githubusercontent.com/Mip3r/SunMoonProxy/main/version.txt';
+      try{ const r = await fetch(remote, {cache: 'no-store'}); const txt = await r.text(); return JSON.parse(txt).version; }
+      catch(e){ console.warn('remote version fetch failed', e); return null }
+    }
+    function showVersionPopup(link){ document.getElementById('versionLink').href = link; document.getElementById('versionPopup').classList.add('show'); }
+    async function checkVersion(){ const local = await fetchLocalVersion(); const remote = await fetchRemoteVersion(); if(local && remote && local !== remote) showVersionPopup('https://github.com/Mip3r/SunMoonProxy'); }
+    window.addEventListener('load', checkVersion);
+  </script>
+</body>
+</html>

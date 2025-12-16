@@ -1,0 +1,16 @@
+{
+  "name": "sunmoon-proxy",
+  "version": "1.0.0",
+  "description": "SunMoon Proxy - static launcher and small scraping helpers",
+  "main": "index.js",
+  "scripts": {
+    "scrape": "node scripts/scrape.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "scramjet": "^2.11.0",
+    "node-fetch": "^2.6.7",
+    "cheerio": "^1.0.0-rc.12"
+  }
+}

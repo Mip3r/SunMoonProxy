@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SunMoon Proxy</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="app">
+    <div style="width:100%; max-width:980px; margin:48px auto; text-align:center;">
+      <h1 style="margin-bottom:0.5rem;">SunMoon Proxy (trimmed)</h1>
+      <p style="color:rgba(230,247,255,0.85)">This page has been trimmed to remove pre-Lunar UI chrome. Open the Lunar snapshot below:</p>
+      <p style="margin-top:1.25rem;"><a class="hero-cta" href="lunar-copy/index.html">Open Lunar snapshot</a></p>
+    </div>
+  </div>
+</body>
+</html>

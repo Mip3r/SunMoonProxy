@@ -3,23 +3,23 @@
 <head>
 	<meta charset="utf-8">
 	<title>Games - SunMoon Proxy</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="assets/style.css">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<style> .hero{ padding:22px } </style>
 </head>
 <body>
 	<div class="app">
-    <nav class="nav">
-      <a class="brand" href="index.html">
-        <img src="assets/logo.png" alt="SunMoon logo">
-        <div class="name">SunMoon Proxy</div>
-      </a>
-      <a href="index.html">🏠 Home</a>
-      <a href="games.html">🎮 Games</a>
-      <a href="browser.html">🌐 Browser</a>
-      <a href="info.html">ℹ️ Info</a>
-      <a href="settings.html">⚙️ Settings</a>
-    </nav>
+		<nav class="nav">
+			<a class="brand" href="index.html">
+				<img src="assets/logo.png" alt="SunMoon logo">
+				<div class="name">SunMoon Proxy</div>
+			</a>
+			<a href="index.html"><img src="assets/logo.png" alt="Home" style="width:28px;height:28px;object-fit:contain"></a>
+			<a href="games.html"><img src="assets/game_button.png" alt="Games" style="width:28px;height:28px;object-fit:contain"></a>
+			<a href="info.html"><img src="assets/info_button.png" alt="Info" style="width:28px;height:28px;object-fit:contain"></a>
+			<a href="settings.html"><img src="assets/settings_button.png" alt="Settings" style="width:28px;height:28px;object-fit:contain"></a>
+		</nav>
 
 
     <header class="header"></header>
@@ -31,18 +31,18 @@
 				<div class="games-grid">
 					<!-- Game cards with their own icons that link to dedicated game pages -->
 					<div class="game-card">
-						<img src="assets/game-icons/1v1.png" alt="1v1.lol">
+						<img src="assets/game_button.png" alt="1v1.lol">
 						<h3>1v1.lol</h3>
 						<div>
-							<a href="games/1v1.lol.html" class="play-button">Play Game</a>
+							<a href="index.html?open=games/1v1.lol.html" class="play-button">Play Game</a>
 						</div>
 					</div>
 					
 					<div class="game-card">
-						<img src="assets/game-icons/tomb.png" alt="Tomb of the Mask">
+						<img src="assets/game_button.png" alt="Tomb of the Mask">
 						<h3>Tomb of the Mask</h3>
 						<div>
-							<a href="games/tomb_of_the_mask.html" class="play-button">Play Game</a>
+							<a href="index.html?open=games/tomb_of_the_mask.html" class="play-button">Play Game</a>
 						</div>
 					</div>
 					<!-- Add more game cards here -->
