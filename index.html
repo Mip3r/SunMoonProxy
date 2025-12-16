@@ -19,13 +19,6 @@
 </head>
 <body>
   <div class="sidebar">
-    <a href="#" id="home-btn" title="Home">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9"></path>
-        <path d="M20 3v4"></path>
-        <path d="M22 5h-4"></path>
-      </svg>
-    </a>
     <a href="#" id="proxy-btn" title="Proxy">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
@@ -41,32 +34,34 @@
     </button>
   </div>
   <div class="main">
-    <div class="welcome" id="welcome">
+    <div class="welcome" id="welcome" style="display: none;">
       <h1>Welcome to SunMoon Proxy</h1>
-      <p>Use the sidebar to navigate: Games, Proxy, or Lunar.</p>
+      <p>Use the sidebar to navigate: Proxy or Lunar.</p>
     </div>
-    <div class="proxy-section" id="proxy-section" style="display: none;">
+    <div class="proxy-section" id="proxy-section">
       <form id="url-form" style="margin-bottom: 20px;">
         <input type="text" id="url-input" placeholder="Enter URL to load..." style="width: 70%; padding: 10px; border: 1px solid #a5adce; background: #181824; color: #e6f7ff;" />
         <button type="submit" style="padding: 10px 20px; background: #a5adce; color: #181824; border: none; cursor: pointer;">Load</button>
+        <button type="button" id="back-btn" style="padding: 10px 20px; background: #666; color: #fff; border: none; cursor: pointer; margin-left: 10px;">Back</button>
       </form>
       <iframe id="proxy-iframe" class="proxy-iframe" src="about:blank"></iframe>
     </div>
   </div>
   <script>
-    const homeBtn = document.getElementById('home-btn');
     const proxyBtn = document.getElementById('proxy-btn');
     const lunarBtn = document.getElementById('lunar-btn');
+    const backBtn = document.getElementById('back-btn');
     const welcome = document.getElementById('welcome');
     const proxySection = document.getElementById('proxy-section');
     const urlForm = document.getElementById('url-form');
     const urlInput = document.getElementById('url-input');
     const proxyIframe = document.getElementById('proxy-iframe');
 
-    homeBtn.addEventListener('click', (e) => {
+    backBtn.addEventListener('click', (e) => {
       e.preventDefault();
       proxySection.style.display = 'none';
       welcome.style.display = 'block';
+      proxyIframe.src = 'about:blank';
     });
 
     proxyBtn.addEventListener('click', (e) => {
