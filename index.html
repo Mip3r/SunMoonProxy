@@ -40,13 +40,13 @@
         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
       </svg>
     </a>
-    <a href="https://lunaron.top/" title="Lunar">
+    <button id="lunar-btn" title="Lunar">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9"></path>
         <path d="M20 3v4"></path>
         <path d="M22 5h-4"></path>
       </svg>
-    </a>
+    </button>
   </div>
   <div class="main">
     <div class="welcome" id="welcome">
@@ -64,6 +64,7 @@
   <script>
     const homeBtn = document.getElementById('home-btn');
     const proxyBtn = document.getElementById('proxy-btn');
+    const lunarBtn = document.getElementById('lunar-btn');
     const welcome = document.getElementById('welcome');
     const proxySection = document.getElementById('proxy-section');
     const urlForm = document.getElementById('url-form');
@@ -82,12 +83,11 @@
       proxySection.style.display = 'block';
     });
 
-    urlForm.addEventListener('submit', (e) => {
+    lunarBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      const url = urlInput.value.trim();
-      if (url) {
-        proxyIframe.src = url.startsWith('http') ? url : 'https://' + url;
-      }
+      welcome.style.display = 'none';
+      proxySection.style.display = 'block';
+      proxyIframe.src = 'https://lunaron.top/';
     });
   </script>
 </body>
