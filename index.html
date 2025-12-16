@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SunMoon Proxy</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #181824; color: #e6f7ff; }
+    .sidebar { position: fixed; left: 0; top: 0; height: 100vh; width: 52px; background: rgba(0,0,0,0.8); border-right: 3px solid black; display: flex; flex-direction: column; align-items: center; z-index: 50; }
+    .sidebar a { margin: 16px 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; transition: background 0.2s; }
+    .sidebar a:hover { background: rgba(255,255,255,0.2); }
+    .sidebar svg { width: 24px; height: 24px; color: #a5adce; }
+    .sidebar a:hover svg { color: white; }
+    .main { margin-left: 52px; padding: 20px; min-height: 100vh; }
+    .welcome { text-align: center; margin-top: 100px; }
+    .proxy-iframe { display: none; width: 100%; height: calc(100vh - 68px); border: none; }
+    .proxy-iframe.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <a href="#" id="home-btn" title="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9"></path>
+        <path d="M20 3v4"></path>
+        <path d="M22 5h-4"></path>
+      </svg>
+    </a>
+    <a href="games/" title="Games">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 17a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2Z"></path>
+        <path d="M6 15v-2"></path>
+        <path d="M12 15V9"></path>
+        <circle cx="12" cy="6" r="3"></circle>
+      </svg>
+    </a>
+    <a href="#" id="proxy-btn" title="Proxy">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+      </svg>
+    </a>
+    <a href="lunar-copy/" title="Lunar">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9"></path>
+        <path d="M20 3v4"></path>
+        <path d="M22 5h-4"></path>
+      </svg>
+    </a>
+  </div>
+  <div class="main">
+    <div class="welcome" id="welcome">
+      <h1>Welcome to SunMoon Proxy</h1>
+      <p>Use the sidebar to navigate: Games, Proxy, or Lunar.</p>
+    </div>
+    <iframe id="proxy-iframe" class="proxy-iframe" src="about:blank"></iframe>
+  </div>
+  <script>
+    const homeBtn = document.getElementById('home-btn');
+    const proxyBtn = document.getElementById('proxy-btn');
+    const welcome = document.getElementById('welcome');
+    const proxyIframe = document.getElementById('proxy-iframe');
+
+    homeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      proxyIframe.classList.remove('show');
+      welcome.style.display = 'block';
+    });
+
+    proxyBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      welcome.style.display = 'none';
+      proxyIframe.classList.add('show');
+      if (proxyIframe.src === 'about:blank') {
+        proxyIframe.src = 'https://www.google.com'; // Default proxy start page, change as needed
+      }
+    });
+  </script>
+</body>
+</html></content>
+<parameter name="filePath">c:\Users\erm actually\.vscode\SunMoonProxy\index.html
